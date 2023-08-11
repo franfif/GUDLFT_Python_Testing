@@ -2,7 +2,6 @@ bin
 include
 lib
 .Python
-tests/
 .envrc
 pyvenv.cfg
 __pycache__
