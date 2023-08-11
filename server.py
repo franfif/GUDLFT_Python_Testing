@@ -33,7 +33,7 @@ def show_summary():
         return render_template('welcome.html', club=club, competitions=competitions)
     except IndexError:
         flash("This email is not registered, please try again.")
-        return render_template('index.html')
+        return redirect('/')
 
 
 @app.route('/book/<competition>/<club>')
