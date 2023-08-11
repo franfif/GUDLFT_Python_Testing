@@ -1,13 +1,4 @@
-# @app.route('/show_summary', methods=['POST'])
-# def show_summary():
-#     club = [club for club in clubs if club['email'] == request.form['email']][0]
-#     return render_template('welcome.html', club=club, competitions=competitions)
-#
-#
-# def test_show_summary_registered_email() -> render_template('welcome.html')
-
 import pytest
-
 from server import app
 
 
