@@ -27,10 +27,12 @@ clubs_for_tests = [{'name': 'Simply Lift', 'email': 'john@simplylift.co', 'point
                    {'name': 'Iron Temple', 'email': 'admin@irontemple.com', 'points': '4'},
                    {'name': 'She Lifts', 'email': 'kate@shelifts.co.uk', 'points': '12'}]
 
-# mock load_clubs to return the list I want
-# login with an account from mock load_clubs
-# mock book()?
-# test purchase() with trying to purchase more than the number of points the club has.
-# club has 9 points
-# club tries to purchase 10 places
-# function redirects to book(), with an error message "not enough points"
+
+def test_purchase_too_many_places(client):
+    rv = client.post('/purchase_places', data={'competition': "Spring Festival",
+                                               'club': 'Simply Lift',
+                                               'places': 15})
+    data = rv.data.decode()
+    assert rv.status_code == 302
+    assert data.find("Your club does not have enough places.") != -1
+
