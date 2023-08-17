@@ -1,24 +1,12 @@
-import json
+# import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 
-
-def load_clubs():
-    with open('clubs.json') as c:
-        list_of_clubs = json.load(c)['clubs']
-        return list_of_clubs
-
-
-def load_competitions():
-    with open('competitions.json') as comps:
-        list_of_competitions = json.load(comps)['competitions']
-        return list_of_competitions
+from utilities.utils import process_purchase
+from utilities.utils import clubs, competitions, bookings
 
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
-
-competitions = load_competitions()
-clubs = load_clubs()
 
 
 @app.route('/')
@@ -51,10 +39,22 @@ def book(competition, club):
 def purchase_places():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
-    places_required = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
-    flash('Great-booking complete!')
-    return render_template('welcome.html', club=club, competitions=competitions)
+    places_required = request.form['places']
+    if places_required == '':
+        places_required = 0
+    places_required = int(places_required)
+    # call helper function with competition and club
+    # DO I NEED TO RETURN club, competition, and booking?
+    purchase, messages = process_purchase(club, competition, places_required)
+    for message in messages:
+        flash(message)
+    if purchase:
+        return render_template('welcome.html', club=club, competitions=competitions)
+    else:
+        return redirect(f'/book/{competition["name"]}/{club["name"]}')
+
+    # helper function returns club and competition as well as exception
+    # purchase_places() handle exception with appropriate flash message
 
 
 # TODO: Add route for points display
