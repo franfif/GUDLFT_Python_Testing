@@ -56,7 +56,6 @@ def purchase_places():
         places_required = 0
     places_required = int(places_required)
     # call helper function with competition and club
-    # DO I NEED TO RETURN club, competition, and booking?
     purchase, messages = process_purchase(club, competition, places_required)
     for message in messages:
         flash(message)
