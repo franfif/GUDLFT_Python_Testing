@@ -1,8 +1,13 @@
 import json
+from datetime import datetime
 
 
 # Max number of places a club is able to book for a competition
 MAX_BOOKING = 12
+
+
+def upcoming(date):
+    return date > datetime.today().strftime("%Y-%m-%d %H:%M:%S")
 
 
 def load_clubs():
