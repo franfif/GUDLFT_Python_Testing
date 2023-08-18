@@ -37,6 +37,9 @@ def process_purchase(club, competition, places_required):
     processed = False
     messages = []
 
+    if not upcoming(competition['date']):
+        messages.append("This competition is over. Please select another competition.")
+        return processed, messages
     if places_required == 0:
         messages.append("Please enter a number of place to purchase for the competition.")
     # Club is not allowed to book more than 12 places in a competition

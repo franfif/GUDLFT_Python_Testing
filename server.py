@@ -1,7 +1,7 @@
 # import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 
-from utilities.utils import process_purchase, MAX_BOOKING
+from utilities.utils import process_purchase, upcoming, MAX_BOOKING
 from utilities.utils import clubs, competitions, bookings
 
 
@@ -14,6 +14,11 @@ def get_maximum_allowed():
     def or_maximum_allowed(places):
         return min([int(places), MAX_BOOKING])
     return dict(or_maximum_allowed=or_maximum_allowed)
+
+
+@app.context_processor
+def not_past():
+    return dict(upcoming=upcoming)
 
 
 @app.route('/')
@@ -35,7 +40,7 @@ def show_summary():
 def book(competition, club):
     found_club = [c for c in clubs if c['name'] == club][0]
     found_competition = [c for c in competitions if c['name'] == competition][0]
-    if found_club and found_competition:
+    if found_club and found_competition and upcoming(found_competition['date']):
         return render_template('booking.html', club=found_club, competition=found_competition)
     else:
         flash("Something went wrong-please try again")
