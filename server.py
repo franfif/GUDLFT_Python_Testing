@@ -1,12 +1,19 @@
 # import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 
-from utilities.utils import process_purchase
+from utilities.utils import process_purchase, MAX_BOOKING
 from utilities.utils import clubs, competitions, bookings
 
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
+
+
+@app.context_processor
+def get_maximum_allowed():
+    def or_maximum_allowed(places):
+        return min([int(places), MAX_BOOKING])
+    return dict(or_maximum_allowed=or_maximum_allowed)
 
 
 @app.route('/')
