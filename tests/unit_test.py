@@ -83,18 +83,27 @@ class TestPurchase(DataForTests, Client):
         res_processed, res_messages = process_purchase(club, competition, places_required)
         assert res_processed is expected_processed
 
-    @pytest.mark.parametrize('club, competition, places_required, expected_processed, expected_points_left',
+    @pytest.mark.parametrize('club, competition, bookings, places_required, expected_processed',
                              [(DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[2],
-                               4, True, 13-4),
+                               DataForTests.bookings_for_tests(), 4, True),
                               (DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[2],
-                               7, False, 13),
+                               DataForTests.bookings_for_tests(), 7, False),
                               (DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[1],
-                               13, False, 13),
+                               DataForTests.bookings_for_tests(), 13, False),
                               (DataForTests.clubs_for_tests()[1], DataForTests.competitions_for_tests()[1],
-                               7, False, 4),
+                               DataForTests.bookings_for_tests(), 7, False),
                               ])
-    def test_update_points(self, setup_data, club, competition, places_required,
-                           expected_processed, expected_points_left):
+    def test_update_points(self, setup_data, club, competition, bookings, places_required,
+                           expected_processed):
+        club_expected_points = int(club['points'])
+        competition_expected_places = int(competition['numberOfPlaces'])
+        booking_expected_places = int(bookings[competition['name']][club['name']])
+        if expected_processed:
+            club_expected_points -= places_required
+            competition_expected_places -= places_required
+            booking_expected_places += places_required
         res_processed, res_messages = process_purchase(club, competition, places_required)
         assert res_processed == expected_processed
-        assert int(club['points']) == expected_points_left
+        assert int(club['points']) == club_expected_points
+        assert int(competition['numberOfPlaces']) == competition_expected_places
+        assert int(bookings[competition['name']][club['name']]) == booking_expected_places
