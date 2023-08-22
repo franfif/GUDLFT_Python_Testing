@@ -82,3 +82,19 @@ class TestPurchase(DataForTests, Client):
     def test_process_current_past_competition(self, setup_data, club, competition, places_required, expected_processed):
         res_processed, res_messages = process_purchase(club, competition, places_required)
         assert res_processed is expected_processed
+
+    @pytest.mark.parametrize('club, competition, places_required, expected_processed, expected_points_left',
+                             [(DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[2],
+                               4, True, 13-4),
+                              (DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[2],
+                               7, False, 13),
+                              (DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[1],
+                               13, False, 13),
+                              (DataForTests.clubs_for_tests()[1], DataForTests.competitions_for_tests()[1],
+                               7, False, 4),
+                              ])
+    def test_update_points(self, setup_data, club, competition, places_required,
+                           expected_processed, expected_points_left):
+        res_processed, res_messages = process_purchase(club, competition, places_required)
+        assert res_processed == expected_processed
+        assert int(club['points']) == expected_points_left
