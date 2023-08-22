@@ -42,7 +42,7 @@ class DataForTests:
     @staticmethod
     def competitions_for_tests():
         return [{'name': 'Spring Festival 2023', "date": "2023-04-22 13:30:00", "numberOfPlaces": "25"},
-                {'name': 'Fall Classic 2023', "date": "2023-10-22 13:30:00", "numberOfPlaces": "13"},
+                {'name': 'Fall Classic 2023', "date": "2023-10-22 13:30:00", "numberOfPlaces": "23"},
                 {'name': 'Thanksgiving 2023', 'date': '2023-11-23 13:30:00', 'numberOfPlaces': '5'}]
 
     @staticmethod
@@ -64,7 +64,7 @@ class TestPurchase(DataForTests, Client):
     @pytest.mark.parametrize('club, competition, places_required, processed, messages',
                              [(DataForTests.clubs_for_tests()[1], DataForTests.competitions_for_tests()[1], 400, False,
                                ["You are not allowed to purchase more than 12 places for a single competition.",
-                                "There are only 13 places left in this competition.",
+                                "There are only 23 places left in this competition.",
                                 "You are only able to purchase 4 places for your club."]),
                               (DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[1], 3, True,
                                ["Great-booking complete!"]),
