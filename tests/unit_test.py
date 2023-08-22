@@ -43,7 +43,7 @@ class DataForTests:
     def competitions_for_tests():
         return [{'name': 'Spring Festival 2023', "date": "2023-04-22 13:30:00", "numberOfPlaces": "25"},
                 {'name': 'Fall Classic 2023', "date": "2023-10-22 13:30:00", "numberOfPlaces": "13"},
-                {'name': 'Thanksgiving 2023', 'date': '2023-11-23 13:30:00', 'numberOfPlaces': '15'}]
+                {'name': 'Thanksgiving 2023', 'date': '2023-11-23 13:30:00', 'numberOfPlaces': '5'}]
 
     @staticmethod
     def bookings_for_tests():
