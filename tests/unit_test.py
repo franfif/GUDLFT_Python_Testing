@@ -24,14 +24,14 @@ class TestLogin(Client):
 class DataForTests:
     @pytest.fixture
     def setup_data(self, mocker):
-        mocked_clubs = self.clubs_for_tests()
         mocked_competitions = self.competitions_for_tests()
+        mocked_clubs = self.clubs_for_tests()
         mocked_bookings = self.bookings_for_tests()
         mocker.patch.object(server, 'competitions', mocked_competitions)
         mocker.patch.object(server, 'clubs', mocked_clubs)
         mocker.patch.object(utilities.utils, 'competitions', mocked_competitions)
-        mocker.patch.object(utilities.utils, 'bookings', mocked_bookings)
         mocker.patch.object(utilities.utils, 'clubs', mocked_clubs)
+        mocker.patch.object(utilities.utils, 'bookings', mocked_bookings)
 
     @staticmethod
     def clubs_for_tests():
