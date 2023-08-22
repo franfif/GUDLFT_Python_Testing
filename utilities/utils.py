@@ -6,7 +6,7 @@ from datetime import datetime
 MAX_BOOKING = 12
 
 
-def upcoming(date):
+def is_upcoming(date):
     return date > datetime.today().strftime("%Y-%m-%d %H:%M:%S")
 
 
@@ -37,7 +37,7 @@ def process_purchase(club, competition, places_required):
     processed = False
     messages = []
 
-    if not upcoming(competition['date']):
+    if not is_upcoming(competition['date']):
         messages.append("This competition is over. Please select another competition.")
         return processed, messages
     if places_required == 0:
