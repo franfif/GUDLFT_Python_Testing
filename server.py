@@ -1,9 +1,8 @@
 # import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 
-from utilities.utils import process_purchase, upcoming, MAX_BOOKING
-from utilities.utils import clubs, competitions, bookings
 from utilities.utils import process_purchase, is_upcoming, MAX_BOOKING
+from utilities.utils import clubs, competitions
 
 
 app = Flask(__name__)
@@ -57,6 +56,7 @@ def purchase_places():
         places_required = 0
     places_required = int(places_required)
     # call helper function with competition and club
+    # get the status of purchase (bool) and a potential list of messages
     purchase, messages = process_purchase(club, competition, places_required)
     for message in messages:
         flash(message)
@@ -64,9 +64,6 @@ def purchase_places():
         return render_template('welcome.html', club=club, competitions=competitions)
     else:
         return redirect(f'/book/{competition["name"]}/{club["name"]}')
-
-    # helper function returns club and competition as well as exception
-    # purchase_places() handle exception with appropriate flash message
 
 
 # TODO: Add route for points display
