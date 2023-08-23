@@ -20,6 +20,15 @@ class TestLogin(Client):
         response = client.post('/show_summary', data={'email': email})
         assert response.status_code == expected_status_code
 
+    def test_logout(self, client):
+        response = client.get('/logout')
+        assert response.status_code == 302
+
+    def test_logout_after_redirect(self, client):
+        response = client.get('/logout', follow_redirects=True)
+        assert response.status_code == 200
+        assert b'<h1>Welcome to the GUDLFT Registration Portal!</h1>' in response.data
+
 
 class DataForTests:
     @pytest.fixture
