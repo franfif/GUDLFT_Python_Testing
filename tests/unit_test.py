@@ -98,3 +98,15 @@ class TestPurchase(DataForTests, Client):
         res_processed, res_messages = process_purchase(club, competition, places_required)
         assert res_processed == expected_processed
         assert int(club['points']) == expected_points_left
+
+
+class TestPointsBoard(DataForTests, Client):
+    def test_points_board_route(self, client, setup_data):
+        response = client.get('/points_board')
+        # Test points board route
+        assert response.status_code == 200
+        # Test number points displayed for clubs is as expected
+        assert b'''<tr>
+                    <td>Simply Lift</td>
+                    <td>13</td>
+                </tr>''' in response.data
