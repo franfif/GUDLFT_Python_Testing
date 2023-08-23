@@ -94,7 +94,7 @@ class TestBook(DataForTests, Client):
 
 
 class TestPurchase(DataForTests, Client):
-    @pytest.mark.parametrize('places_required, expected_status_code', [(300, 302), (1, 200)])
+    @pytest.mark.parametrize('places_required, expected_status_code', [(300, 302), (1, 200), ('', 302)])
     def test_purchase_places(self, client, setup_data, places_required, expected_status_code):
         rv = client.post('/purchase_places', data={'competition': self.competitions_for_tests()[1]['name'],
                                                    'club': self.clubs_for_tests()[1]['name'],
@@ -107,6 +107,8 @@ class TestPurchase(DataForTests, Client):
                                ["You are not allowed to purchase more than 12 places for a single competition.",
                                 "There are only 13 places left in this competition.",
                                 "You are only able to purchase 4 places for your club."]),
+                              (DataForTests.clubs_for_tests()[1], DataForTests.competitions_for_tests()[1], 0, False,
+                               ["Please enter a number of place to purchase for the competition."]),
                               (DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[1], 3, True,
                                ["Great-booking complete!"]),
                               ])
