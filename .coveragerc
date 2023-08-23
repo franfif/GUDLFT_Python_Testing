@@ -1,0 +1,7 @@
+[run]
+omit =
+    lib/*
+    *tests/*
+
+[report]
+omit = tests/*
