@@ -61,6 +61,38 @@ class DataForTests:
                 'Thanksgiving 2023': {'Simply Lift': 0, 'Iron Temple': 0, 'She Lifts': 0}}
 
 
+class TestBook(DataForTests, Client):
+
+    no_club = 'No club'
+    no_competition = 'No Competition'
+
+    @pytest.mark.parametrize('club, competition, expected_content, expected_messages',
+                             [(DataForTests.clubs_for_tests()[0]['name'],
+                               DataForTests.competitions_for_tests()[1]['name'],
+                               '<title>Booking for',
+                               None),
+                              (DataForTests.clubs_for_tests()[0]['name'],
+                               DataForTests.competitions_for_tests()[0]['name'],
+                               '<title>Summary | GUDLFT Registration</title>',
+                               'Competition is over.'),
+                              (no_club,
+                               DataForTests.competitions_for_tests()[1]['name'],
+                               '<title>Summary | GUDLFT Registration</title>',
+                               'Something went wrong-please try again'),
+                              (DataForTests.clubs_for_tests()[0]['name'],
+                               no_competition,
+                               '<title>Summary | GUDLFT Registration</title>',
+                               'Something went wrong-please try again'),
+                              ])
+    def test_book_route(self, client, setup_data, club, competition, expected_content, expected_messages):
+        response = client.get(f'/book/{competition}/{club}')
+        assert response.status_code == 200
+        data = response.data.decode()
+        assert expected_content in data
+        if expected_messages:
+            assert expected_messages in data
+
+
 class TestPurchase(DataForTests, Client):
     @pytest.mark.parametrize('places_required, expected_status_code', [(300, 302), (1, 200)])
     def test_purchase_places(self, client, setup_data, places_required, expected_status_code):
