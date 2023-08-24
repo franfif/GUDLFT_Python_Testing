@@ -33,14 +33,17 @@ class TestLogin(Client):
 class DataForTests:
     @pytest.fixture
     def setup_data(self, mocker):
-        mocked_clubs = self.clubs_for_tests()
         mocked_competitions = self.competitions_for_tests()
+        mocked_clubs = self.clubs_for_tests()
         mocked_bookings = self.bookings_for_tests()
         mocker.patch.object(server, 'competitions', mocked_competitions)
         mocker.patch.object(server, 'clubs', mocked_clubs)
         mocker.patch.object(utilities.utils, 'competitions', mocked_competitions)
-        mocker.patch.object(utilities.utils, 'bookings', mocked_bookings)
         mocker.patch.object(utilities.utils, 'clubs', mocked_clubs)
+        mocker.patch.object(utilities.utils, 'bookings', mocked_bookings)
+        yield {'competitions': mocked_competitions,
+               'clubs': mocked_clubs,
+               'bookings': mocked_bookings}
 
     @staticmethod
     def clubs_for_tests():
@@ -51,7 +54,7 @@ class DataForTests:
     @staticmethod
     def competitions_for_tests():
         return [{'name': 'Spring Festival 2023', "date": "2023-04-22 13:30:00", "numberOfPlaces": "25"},
-                {'name': 'Fall Classic 2023', "date": "2023-10-22 13:30:00", "numberOfPlaces": "13"},
+                {'name': 'Fall Classic 2023', "date": "2023-10-22 13:30:00", "numberOfPlaces": "23"},
                 {'name': 'Thanksgiving 2023', 'date': '2023-11-23 13:30:00', 'numberOfPlaces': '5'}]
 
     @staticmethod
@@ -105,7 +108,7 @@ class TestPurchase(DataForTests, Client):
     @pytest.mark.parametrize('club, competition, places_required, processed, messages',
                              [(DataForTests.clubs_for_tests()[1], DataForTests.competitions_for_tests()[1], 400, False,
                                ["You are not allowed to purchase more than 12 places for a single competition.",
-                                "There are only 13 places left in this competition.",
+                                "There are only 23 places left in this competition.",
                                 "You are only able to purchase 4 places for your club."]),
                               (DataForTests.clubs_for_tests()[1], DataForTests.competitions_for_tests()[1], 0, False,
                                ["Please enter a number of place to purchase for the competition."]),
@@ -126,21 +129,30 @@ class TestPurchase(DataForTests, Client):
         res_processed, res_messages = process_purchase(club, competition, places_required)
         assert res_processed is expected_processed
 
-    @pytest.mark.parametrize('club, competition, places_required, expected_processed, expected_points_left',
+    @pytest.mark.parametrize('club, competition, places_required, expected_processed',
                              [(DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[2],
-                               4, True, 13-4),
+                               4, True),
                               (DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[2],
-                               7, False, 13),
+                               7, False),
                               (DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[1],
-                               13, False, 13),
+                               13, False),
                               (DataForTests.clubs_for_tests()[1], DataForTests.competitions_for_tests()[1],
-                               7, False, 4),
+                               7, False),
                               ])
-    def test_update_points(self, setup_data, club, competition, places_required,
-                           expected_processed, expected_points_left):
+    def test_update_points(self, setup_data, club, competition, places_required, expected_processed):
+        bookings = setup_data['bookings']
+        club_expected_points = int(club['points'])
+        competition_expected_places = int(competition['numberOfPlaces'])
+        booking_expected_places = int(bookings[competition['name']][club['name']])
+        if expected_processed:
+            club_expected_points -= places_required
+            competition_expected_places -= places_required
+            booking_expected_places += places_required
         res_processed, res_messages = process_purchase(club, competition, places_required)
         assert res_processed == expected_processed
-        assert int(club['points']) == expected_points_left
+        assert int(club['points']) == club_expected_points
+        assert int(competition['numberOfPlaces']) == competition_expected_places
+        assert int(bookings[competition['name']][club['name']]) == booking_expected_places
 
 
 class TestPointsBoard(DataForTests, Client):
