@@ -32,6 +32,9 @@ class DataForTests:
         mocker.patch.object(utilities.utils, 'competitions', mocked_competitions)
         mocker.patch.object(utilities.utils, 'clubs', mocked_clubs)
         mocker.patch.object(utilities.utils, 'bookings', mocked_bookings)
+        yield {'competitions': mocked_competitions,
+               'clubs': mocked_clubs,
+               'bookings': mocked_bookings}
 
     @staticmethod
     def clubs_for_tests():
@@ -83,18 +86,18 @@ class TestPurchase(DataForTests, Client):
         res_processed, res_messages = process_purchase(club, competition, places_required)
         assert res_processed is expected_processed
 
-    @pytest.mark.parametrize('club, competition, bookings, places_required, expected_processed',
+    @pytest.mark.parametrize('club, competition, places_required, expected_processed',
                              [(DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[2],
-                               DataForTests.bookings_for_tests(), 4, True),
+                               4, True),
                               (DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[2],
-                               DataForTests.bookings_for_tests(), 7, False),
+                               7, False),
                               (DataForTests.clubs_for_tests()[0], DataForTests.competitions_for_tests()[1],
-                               DataForTests.bookings_for_tests(), 13, False),
+                               13, False),
                               (DataForTests.clubs_for_tests()[1], DataForTests.competitions_for_tests()[1],
-                               DataForTests.bookings_for_tests(), 7, False),
+                               7, False),
                               ])
-    def test_update_points(self, setup_data, club, competition, bookings, places_required,
-                           expected_processed):
+    def test_update_points(self, setup_data, club, competition, places_required, expected_processed):
+        bookings = setup_data['bookings']
         club_expected_points = int(club['points'])
         competition_expected_places = int(competition['numberOfPlaces'])
         booking_expected_places = int(bookings[competition['name']][club['name']])
