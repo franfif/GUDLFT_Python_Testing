@@ -2,7 +2,7 @@ import pytest
 from server import app
 
 from utilities import utils
-from .sample_data import mocked_competitions, mocked_clubs, mocked_bookings
+from .sample_data import competitions_for_tests, clubs_for_tests, bookings_for_tests
 import server
 
 
@@ -16,6 +16,9 @@ class Client:
 
 @pytest.fixture(scope='function')
 def setup_data(mocker):
+    mocked_competitions = competitions_for_tests()
+    mocked_clubs = clubs_for_tests()
+    mocked_bookings = bookings_for_tests()
     mocker.patch.object(server, 'competitions', mocked_competitions)
     mocker.patch.object(server, 'clubs', mocked_clubs)
     mocker.patch.object(utils, 'competitions', mocked_competitions)

@@ -14,8 +14,3 @@ def bookings_for_tests():
     return {'Spring Festival 2023': {'Simply Lift': 0, 'Iron Temple': 0, 'She Lifts': 0},
             'Fall Classic 2023': {'Simply Lift': 0, 'Iron Temple': 0, 'She Lifts': 0},
             'Thanksgiving 2023': {'Simply Lift': 0, 'Iron Temple': 0, 'She Lifts': 0}}
-
-
-mocked_competitions = competitions_for_tests()
-mocked_clubs = clubs_for_tests()
-mocked_bookings = bookings_for_tests()
