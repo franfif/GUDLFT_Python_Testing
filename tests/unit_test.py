@@ -21,10 +21,6 @@ class TestLogin(Client):
 
 
 class TestBook(Client):
-
-    no_club = 'No club'
-    no_competition = 'No Competition'
-
     @pytest.mark.parametrize('club, competition, expected_content, expected_messages',
                              [('Simply Lift',
                                'Fall Classic 2023',
@@ -34,12 +30,12 @@ class TestBook(Client):
                                'Spring Festival 2023',
                                '<title>Summary | GUDLFT Registration</title>',
                                'Competition is over.'),
-                              (no_club,
+                              ('No club',
                                'Fall Classic 2023',
                                '<title>Summary | GUDLFT Registration</title>',
                                'Something went wrong-please try again'),
                               ('Simply Lift',
-                               no_competition,
+                               'No Competition',
                                '<title>Summary | GUDLFT Registration</title>',
                                'Something went wrong-please try again'),
                               ])
