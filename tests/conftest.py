@@ -1,8 +1,17 @@
 import pytest
+from server import app
 
 from utilities import utils
 from .sample_data import mocked_competitions, mocked_clubs, mocked_bookings
 import server
+
+
+class Client:
+    @staticmethod
+    @pytest.fixture
+    def client():
+        with app.test_client() as client:
+            yield client
 
 
 @pytest.fixture(scope='function')
