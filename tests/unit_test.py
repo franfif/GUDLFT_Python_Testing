@@ -1,9 +1,6 @@
 import pytest
 from server import app
-import utilities
-import server
 from utilities.utils import process_purchase
-from .sample_data import mocked_competitions, mocked_clubs, mocked_bookings
 
 
 class Client:
@@ -37,19 +34,19 @@ class TestBook(Client):
     no_competition = 'No Competition'
 
     @pytest.mark.parametrize('club, competition, expected_content, expected_messages',
-                             [(mocked_clubs[0]['name'],
-                               mocked_competitions[1]['name'],
+                             [('Simply Lift',
+                               'Fall Classic 2023',
                                '<title>Booking for',
                                None),
-                              (mocked_clubs[0]['name'],
-                               mocked_competitions[0]['name'],
+                              ('Simply Lift',
+                               'Spring Festival 2023',
                                '<title>Summary | GUDLFT Registration</title>',
                                'Competition is over.'),
                               (no_club,
-                               mocked_competitions[1]['name'],
+                               'Fall Classic 2023',
                                '<title>Summary | GUDLFT Registration</title>',
                                'Something went wrong-please try again'),
-                              (mocked_clubs[0]['name'],
+                              ('Simply Lift',
                                no_competition,
                                '<title>Summary | GUDLFT Registration</title>',
                                'Something went wrong-please try again'),
@@ -73,13 +70,19 @@ class TestPurchase(Client):
         assert rv.status_code == expected_status_code
 
     @pytest.mark.parametrize('club, competition, places_required, processed, messages',
-                             [(mocked_clubs[1], mocked_competitions[1], 400, False,
+                             [({'name': 'Iron Temple', 'email': 'admin@irontemple.com', 'points': '4'},
+                               {'name': 'Fall Classic 2023', "date": "2023-10-22 13:30:00", "numberOfPlaces": "23"},
+                               400, False,
                                ["You are not allowed to purchase more than 12 places for a single competition.",
                                 "There are only 23 places left in this competition.",
                                 "You are only able to purchase 4 places for your club."]),
-                              (mocked_clubs[1], mocked_competitions[1], 0, False,
+                              ({'name': 'Iron Temple', 'email': 'admin@irontemple.com', 'points': '4'},
+                               {'name': 'Fall Classic 2023', "date": "2023-10-22 13:30:00", "numberOfPlaces": "23"},
+                               0, False,
                                ["Please enter a number of place to purchase for the competition."]),
-                              (mocked_clubs[0], mocked_competitions[1], 3, True,
+                              ({'name': 'Simply Lift', 'email': 'john@simplylift.co', 'points': '13'},
+                               {'name': 'Fall Classic 2023', "date": "2023-10-22 13:30:00", "numberOfPlaces": "23"}
+                               , 3, True,
                                ["Great-booking complete!"]),
                               ])
     def test_process_purchase(self, setup_data, club, competition, places_required, processed, messages):
@@ -89,21 +92,29 @@ class TestPurchase(Client):
             assert message in res_messages
 
     @pytest.mark.parametrize('club, competition, places_required, expected_processed',
-                             [(mocked_clubs[0], mocked_competitions[0], 4, False),
-                              (mocked_clubs[0], mocked_competitions[2], 4, True),
+                             [({'name': 'Simply Lift', 'email': 'john@simplylift.co', 'points': '13'},
+                               {'name': 'Spring Festival 2023', "date": "2023-04-22 13:30:00", "numberOfPlaces": "25"},
+                               4, False),
+                              ({'name': 'Simply Lift', 'email': 'john@simplylift.co', 'points': '13'},
+                               {'name': 'Thanksgiving 2023', 'date': '2023-11-23 13:30:00', 'numberOfPlaces': '5'}
+                               , 4, True),
                               ])
     def test_process_current_past_competition(self, setup_data, club, competition, places_required, expected_processed):
         res_processed, res_messages = process_purchase(club, competition, places_required)
         assert res_processed is expected_processed
 
     @pytest.mark.parametrize('club, competition, places_required, expected_processed',
-                             [(mocked_clubs[0], mocked_competitions[2],
+                             [({'name': 'Simply Lift', 'email': 'john@simplylift.co', 'points': '13'},
+                               {'name': 'Thanksgiving 2023', 'date': '2023-11-23 13:30:00', 'numberOfPlaces': '5'},
                                4, True),
-                              (mocked_clubs[0], mocked_competitions[2],
+                              ({'name': 'Simply Lift', 'email': 'john@simplylift.co', 'points': '13'},
+                               {'name': 'Thanksgiving 2023', 'date': '2023-11-23 13:30:00', 'numberOfPlaces': '5'},
                                7, False),
-                              (mocked_clubs[0], mocked_competitions[1],
+                              ({'name': 'Simply Lift', 'email': 'john@simplylift.co', 'points': '13'},
+                               {'name': 'Fall Classic 2023', "date": "2023-10-22 13:30:00", "numberOfPlaces": "23"},
                                13, False),
-                              (mocked_clubs[1], mocked_competitions[1],
+                              ({'name': 'Iron Temple', 'email': 'admin@irontemple.com', 'points': '4'},
+                               {'name': 'Fall Classic 2023', "date": "2023-10-22 13:30:00", "numberOfPlaces": "23"},
                                7, False),
                               ])
     def test_update_points(self, setup_data, club, competition, places_required, expected_processed):
