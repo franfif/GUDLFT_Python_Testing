@@ -22,3 +22,19 @@ class TestIntegration(Client):
         assert response.status_code == 200
         # Test points left in club
         assert int(setup_data['clubs'][1]['points']) == 3
+
+    def test_purchase_too_much(self, client, setup_data):
+        # process purchase through route
+        response = client.post('/purchase_places', data={'competition': setup_data['competitions'][1]['name'],
+                                                         'club': setup_data['clubs'][0]['name'],
+                                                         'places': 10})
+        assert response.status_code == 200
+        assert int(setup_data['clubs'][0]['points']) == 3
+
+        # purchase again for a total of 13 places
+        response = client.post('/purchase_places', data={'competition': setup_data['competitions'][1]['name'],
+                                                         'club': setup_data['clubs'][0]['name'],
+                                                         'places': 3})
+
+        assert response.status_code == 302
+        assert int(setup_data['clubs'][0]['points']) == 3
