@@ -88,8 +88,8 @@ The library [Coverage](https://coverage.readthedocs.io/en/7.3.0/) has been used 
 > `pytest tests --cov=. --cov-report html`
 > 2. Open the file `htmlcov/index.html` in the browser.<br>
 
-Here's a screenshot of the latest coverage report:
-<img alt="Coverage report shows 100% coverage" src="img/Coverage_Report.png"/>
+Here's a screenshot of the latest coverage report:<br>
+<img alt="Coverage report shows 100% coverage" src="img/Coverage_Report.png" width="70%"/>
 
 ### Performance Tests
 [Performance tests](tests/performance_test.py) assess the speed, responsiveness, and stability of an application when handling 
@@ -105,5 +105,5 @@ In this program, the framework [Locust](https://docs.locust.io/en/stable/) has b
 > 3. Indicate the number of users and the spawn rate, as well as the host address:
 > `http://127.0.0.1:5000`
 
-Here's a screenshot of the latest performance test report:
-<img alt="Locust performance test shows an aggregated average of 37 ms to realize the tasks" src="img/Locust_Performance_Test.png"/>
+Here's a screenshot of the latest performance test report:<br>
+<img alt="Locust performance test shows an aggregated average of 37 ms to realize the tasks" src="img/Locust_Performance_Test.png" width="70%"/>
