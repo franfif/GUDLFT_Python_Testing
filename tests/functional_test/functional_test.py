@@ -6,7 +6,7 @@ from flask import Flask
 from flask_testing import LiveServerTestCase
 
 
-multiprocessing.set_start_method("fork")
+# multiprocessing.set_start_method("fork")
 
 
 class TestPurchase(LiveServerTestCase):
