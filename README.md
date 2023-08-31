@@ -36,9 +36,9 @@ GÜDLFT - Regional Outreach
 
    The app is powered by JSON files. This is to get around having a DB until we actually need one. The main ones are:
    
-   * competitions.json - list of competitions
-   * clubs.json - list of clubs with relevant information. You can look here to see what email addresses the app will accept for login.
-   * bookings.json - list of places booked by each club in each competition
+   * [competitions.json](competitions.json) - list of competitions
+   * [clubs.json](clubs.json) - list of clubs with relevant information. You can look here to see what email addresses the app will accept for login.
+   * [booking.json](booking.json) - list of places booked by each club in each competition
 
 
 ## Branch management
@@ -71,9 +71,9 @@ They also ensure that unexpected input will not cause the program to crash.
 [Functional tests](tests/functional_test/functional_test.py) check the user perspective in any situation and ensure the user is able to perform
 the action they intend and get the appropriate response in case of wrong input.</br>
 
-In this program, the framework Selenium has been used to simulate the user activity on a browser.
+In this program, the framework [Selenium](https://selenium-python.readthedocs.io/index.html) has been used to simulate the user activity on a browser.
 
->   To launch the unit, integration and functional tests: 
+> #### Launch the unit, integration and functional tests: 
 > 1. Run the flask application (restart if needed)
 > 2. Use the following command in the terminal: `pytest tests`
 
@@ -81,12 +81,12 @@ In this program, the framework Selenium has been used to simulate the user activ
 Coverage reports to how well a program has been tested. The requirements indicate a minimum of 
 60% coverage being acceptable.
 
-The library Coverage has been used to evaluate if this program has been properly tested.
+The library [Coverage](https://coverage.readthedocs.io/en/7.3.0/) has been used to evaluate if this program has been properly tested.
 
-> To launch the coverage test:
+> #### Launch the coverage test:
 > 1. Use the following command in the terminal: <br>
 > `pytest tests --cov=. --cov-report html`
-> 2. Open the file htmlcov/index.html` in the browser.<br>
+> 2. Open the file `htmlcov/index.html` in the browser.<br>
 
 Here's a screenshot of the latest coverage report:
 <img alt="Coverage report shows 100% coverage" src="img/Coverage_Report.png"/>
@@ -95,17 +95,15 @@ Here's a screenshot of the latest coverage report:
 [Performance tests](tests/performance_test.py) assess the speed, responsiveness, and stability of an application when handling 
 a particular workload.
 
-In this program, the framework Locust has been used to test the performance of the application.
+In this program, the framework [Locust](https://docs.locust.io/en/stable/) has been used to test the performance of the application.
 
-> To launch the performance test:
+> #### Launch the performance test:
 > 1. Use the following command in the terminal:<br>
 `locust -f tests/performance_test.py`<br>
 > 2. Follow the link provided to start the test:
-> `http://0.0.0.0:8089 `
+> `http://0.0.0.0:8089`
 > 3. Indicate the number of users and the spawn rate, as well as the host address:
 > `http://127.0.0.1:5000`
 
 Here's a screenshot of the latest performance test report:
 <img alt="Locust performance test shows an aggregated average of 37 ms to realize the tasks" src="img/Locust_Performance_Test.png"/>
-
-
