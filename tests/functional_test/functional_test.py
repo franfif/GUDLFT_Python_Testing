@@ -6,10 +6,12 @@ from flask import Flask
 from flask_testing import LiveServerTestCase
 
 
+# # Need this if running these tests by themselves
+# # with command `pytest tests/functional_tests/functional_test.py`
 # multiprocessing.set_start_method("fork")
 
 
-class TestPurchase(LiveServerTestCase):
+class TestFunctional(LiveServerTestCase):
 
     def create_app(self):
         app = Flask(__name__)
