@@ -75,11 +75,16 @@ They also ensure that unexpected input will not cause the program to crash.
 [Functional tests](tests/functional_test/functional_test.py) check the user perspective in any situation and ensure the user is able to perform
 the action they intend and get the appropriate response in case of wrong input.</br>
 
-In this program, the framework [Selenium](https://selenium-python.readthedocs.io/index.html) has been used to simulate the user activity on a browser.
+In this program, the framework [Selenium](https://selenium-python.readthedocs.io/index.html) has been used to simulate the user activity on a browser.<br>
+You will need to download [Chromedriver](https://chromedriver.storage.googleapis.com/index.html?path=114.0.5735.90/) 
+and place it in the [functional_test](tests/functional_test) folder.
 
-> #### Launch the unit, integration and functional tests: 
-> 1. Run the flask application (restart if needed)
-> 2. Use the following command in the terminal: `pytest tests`
+
+> #### Launch the unit, integration and functional tests:
+> 1. Download [Chromedriver](https://chromedriver.storage.googleapis.com/index.html?path=114.0.5735.90/) 
+and place it in the [functional_test](tests/functional_test) folder
+> 2. Run the flask application (restart if needed)
+> 3. Use the following command in the terminal: `pytest tests`
 
 ### Testing Coverage
 Coverage reports to how well a program has been tested. The requirements indicate a minimum of 
