@@ -52,15 +52,19 @@ GÜDLFT - Regional Outreach
 Thoroughly testing a program is ensuring it works in any possible situation.<br>
 This program has been tested using various methods to guarantee its functioning.
 
-The framework pytest as well at its extensions such as pytest-flask and 
-pytest-mock have been used to create tests.
+The framework pytest as well at its extensions such as [pytest-flask](https://pytest-flask.readthedocs.io/en/latest/) 
+and [pytest-mock](https://pytest-mock.readthedocs.io/en/latest/index.html) have been used 
+to create tests.
 
 ### Unit Tests
 [Unit tests](tests/unit_test.py) check that simple units of code (functions, methods, class) work as expected, 
 act accordingly to the specification and return the right values.</br>
 They also check that the unit tested reacts appropriately given unexpected input values.
 
-A unit test cannot be dependent on any functionality outside the unit being tested.
+A unit test cannot be dependent on any functionality outside the unit being tested. 
+For this reason, we have used mocked objects with the library 
+[pytest-mock](https://pytest-mock.readthedocs.io/en/latest/index.html) to control 
+the environment for these tests.
 
 ### Integration Tests
 [Integration tests](tests/integration_test.py) check that units of code work well together to render the appropriate 
@@ -84,12 +88,13 @@ Coverage reports to how well a program has been tested. The requirements indicat
 The library [Coverage](https://coverage.readthedocs.io/en/7.3.0/) has been used to evaluate if this program has been properly tested.
 
 > #### Launch the coverage test:
-> 1. Use the following command in the terminal: <br>
-> `pytest tests --cov=. --cov-report html`
-> 2. Open the file `htmlcov/index.html` in the browser.<br>
+> 1. Run the flask application (restart if needed)
+> 2. Use the following command in the terminal: <br>
+> `pytest tests --cov=. --cov-branch --cov-report html`
+> 3. Open the file `htmlcov/index.html` in the browser.<br>
 
 Here's a screenshot of the latest coverage report:<br>
-<img alt="Coverage report shows 100% coverage" src="img/Coverage_Report.png" width="70%"/>
+<img alt="Coverage report shows 100% coverage" src="img/Coverage_Report.png" width="75%"/>
 
 ### Performance Tests
 [Performance tests](tests/performance_test.py) assess the speed, responsiveness, and stability of an application when handling 
@@ -106,4 +111,4 @@ In this program, the framework [Locust](https://docs.locust.io/en/stable/) has b
 > `http://127.0.0.1:5000`
 
 Here's a screenshot of the latest performance test report:<br>
-<img alt="Locust performance test shows an aggregated average of 37 ms to realize the tasks" src="img/Locust_Performance_Test.png" width="70%"/>
+<img alt="Locust performance test shows an aggregated average of 37 ms to realize the tasks" src="img/Locust_Performance_Test.png" width="75%"/>
