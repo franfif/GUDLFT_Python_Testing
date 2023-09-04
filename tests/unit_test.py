@@ -67,7 +67,7 @@ class TestPurchase(Client):
                               ({'name': 'Iron Temple', 'email': 'admin@irontemple.com', 'points': '4'},
                                {'name': 'Fall Classic 2023', "date": "2023-10-22 13:30:00", "numberOfPlaces": "23"},
                                0, False,
-                               ["Please enter a number of place to purchase for the competition."]),
+                               ["Please enter a positive number of places to purchase for the competition."]),
                               ({'name': 'Simply Lift', 'email': 'john@simplylift.co', 'points': '13'},
                                {'name': 'Fall Classic 2023', "date": "2023-10-22 13:30:00", "numberOfPlaces": "23"}
                                , 3, True,
