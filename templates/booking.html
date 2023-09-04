@@ -22,7 +22,8 @@
     <form action="/purchase_places" method="post">
         <input type="hidden" name="club" value="{{club['name']}}">
         <input type="hidden" name="competition" value="{{competition['name']}}">
-        <label for="places">How many places?</label><input type="number" name="places" id="places" min="1" max="{{ or_maximum_allowed(club['points']) }}"/>
+        <label for="places">How many places?</label>
+        <input type="number" name="places" id="places" min="1" max="{{ or_maximum_allowed(club['points']) }}"/>
         <button type="submit">Book</button>
     </form>
 </body>
