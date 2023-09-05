@@ -10,8 +10,8 @@ app.secret_key = 'something_special'
 
 @app.context_processor
 def get_maximum_allowed():
-    def or_maximum_allowed(places):
-        return min([int(places), MAX_BOOKING])
+    def or_maximum_allowed(points):
+        return min([int(points), MAX_BOOKING])
     return dict(or_maximum_allowed=or_maximum_allowed)
 
 
