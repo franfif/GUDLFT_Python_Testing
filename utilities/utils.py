@@ -37,25 +37,31 @@ def process_purchase(club, competition, places_required):
     processed = False
     messages = []
 
-    if not is_upcoming(competition['date']):
-        messages.append("This competition is over. Please select another competition.")
-        return processed, messages
-    if places_required <= 0:
-        messages.append("Please enter a positive number of places to purchase for the competition.")
-    # Club is not allowed to book more than 12 places in a competition
-    if places_required + int(bookings[competition['name']][club['name']]) > MAX_BOOKING:
-        messages.append("You are not allowed to purchase more than 12 places for a single competition.")
     # Club is not able to purchase more places than they have points
     if places_required > int(club['points']):
         messages.append(f"You are only able to purchase {club['points']} places for your club.")
+    # Club is not allowed to book more than 12 places in a competition
+    if places_required + int(bookings[competition['name']][club['name']]) > MAX_BOOKING:
+        messages.append("You are not allowed to purchase more than 12 places for a single competition.")
+    # Club is not allowed to book a past competition
+    if not is_upcoming(competition['date']):
+        messages.append("This competition is over. Please select another competition.")
+        return processed, messages
+
+    # Club is not allowed to book 0 place or a negative amount
+    if places_required <= 0:
+        messages.append("Please enter a positive number of places to purchase for the competition.")
     # Club is not able to purchase more places than the competition offers
     if places_required > int(competition['numberOfPlaces']):
         messages.append(f"There are only {competition['numberOfPlaces']} places left in this competition.")
 
     if not messages:
+        # Decrease number of places in competition and points in club
         competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - places_required
         club['points'] = int(club['points']) - places_required
+        # Increase number of places in booking
         bookings[competition['name']][club['name']] = int(bookings[competition['name']][club['name']]) + places_required
+        # Add successful message
         messages.append("Great-booking complete!")
         processed = True
 
