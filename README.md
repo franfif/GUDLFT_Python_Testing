@@ -8,7 +8,22 @@ GÜDLFT - Regional Outreach
 
    GÜDLFT is a (fictional - for education purposes) digital platform for coordinating strength competition in North America and Australia.<br>
 
-   This is a proof of concept (POC) project to show a light-weight version of our competition booking platform. The aim is the keep things as light as possible, and use feedback from the users to iterate.
+   This is a proof of concept (POC) project to show a light-weight version of our competition booking platform. The goal of this project is to debug and build a test suite for a Flask application in Python, et proceed with developping more features with a Test-Driven Development approach.
+
+## Main skills involved in this project
+- **Debugging** code in a Python application
+- Test-Driven Development
+- **Unit Tests** and **Integration Tests** with **Pytest**
+- **Functional Tests** with **Selenium**
+- **Test Coverage** with **Coverage**
+- **Performance Tests** with **Locust**
+- Manage **errors and exceptions** in Python
+- Setup of a Python virtual environment
+- Problem Solving
+- Git and Github
+- Flask
+- Testing
+
 
 ## Getting Started
 
